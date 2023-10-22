@@ -1,1 +1,128 @@
 
+
+package busresv;
+
+import java.util.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+public class Booking {
+	String passengerName;
+	int busNo;
+	Date date;
+	
+	Booking(){
+		Scanner scanner =new Scanner(System.in);
+		System.out.println("Enter name of passenger:");
+		passengerName =scanner.next();
+		System.out.println("Enter bus No:");
+		scanner.nextInt();
+		System.out.println("Enter date dd-mm-yyyy");
+		String dateInput =scanner.next();
+		SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			date=dateFormat.parse(dateInput);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public boolean isAvailabl(ArrayList<Booking> bookings, ArrayList<Bus> buses) {
+		int capacity=0;
+		for(Bus bus:buses) {
+			if(bus.getBusno() ==busNo)
+				capacity = bus.getcapacity();
+		}
+		int booked=0;
+		for(Booking b:bookings) {
+			if(b.busNo == busNo && b.date.equals(date)) {
+				booked++;
+				
+			}
+		}
+		return booked<capacity?true:false;
+	}
+	
+
+}
+
+
+
+//Java bus booking
+
+package busresv;
+
+public class Bus {
+	int busNo;
+	boolean ac;
+	int capacity; //get and set
+	
+	Bus(int no,boolean ac,int cap){
+		this.busNo=no;
+		this.ac =ac;
+		this.capacity=cap;
+		
+		
+	}
+	public int getBusno() {
+		return busNo;
+	}
+	public boolean isAc() {
+		return ac;
+	}
+	public int getcapacity() { //accessor method
+		return capacity;
+	}
+	public void setAc(boolean val) {//mutator
+		ac =val;
+	}
+	public void setcapacity(int cap) {//mutator
+		capacity = cap;
+	}
+	public void displayBusInfo() {
+		System.out.println("Bus No:" +busNo + "Ac:" +ac + "Total Capacity:"+capacity);
+	}
+
+}
+
+// Java bus reation for bus not in seat available sorry to tell the program
+ package busresv;
+
+import java.util.Scanner;
+import java.util.ArrayList;
+public class Busdemo {
+
+	 public static void main(String[] args ) {
+		 
+		 ArrayList <Bus> buses=new  ArrayList<Bus>();
+		 ArrayList <Booking> bookings=new  ArrayList<Booking>();
+		 
+		 
+		 buses.add(new Bus(1,true,2));
+		 buses.add(new Bus(1,false,50));
+		 buses.add(new Bus(1,true,43));
+		 
+		 int userOpt =1;
+		 Scanner scanner = new Scanner(System.in);
+		 
+		 	for(Bus b:buses) {
+		 		b.displayBusInfo();
+		 	}
+		 
+		 while(userOpt==1) {
+		   System.out.println("Enter 1 to Book and 2 to exit ");
+		   userOpt = scanner.nextInt();
+		   if(userOpt==1) {
+			   Booking booking =new Booking();
+			   if(booking.isAvailabl(bookings,buses)) {
+				   bookings.add(booking);
+				   System.out.println("your booking is conformed");
+			   }
+			   else
+				   System.out.println("Sorry.Bus is full.Try to anotherbus or date.");
+			   }
+			 
+		 }
+	 }
+}
+
